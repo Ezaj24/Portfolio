@@ -1,13 +1,512 @@
-body {
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800;900&family=Orbitron:wght@400;700;900&display=swap');
+
+* {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: #000000;
+  color: #ffffff;
+  overflow-x: hidden;
+  line-height: 1.6;
+  transition: all 1s ease;
+}
+
+/* Base background texture */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 20%, rgba(229, 181, 103, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(229, 181, 103, 0.02) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
+  transition: all 1s ease;
+}
+
+/* Theme-specific styles */
+.professional-theme {
+  background: #000000;
+}
+
+.professional-theme body::before {
+  background: 
+    radial-gradient(circle at 20% 20%, rgba(229, 181, 103, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(229, 181, 103, 0.02) 0%, transparent 50%);
+}
+
+.thanos-theme {
+  background: linear-gradient(135deg, #000000 0%, #0D0D1A 30%, #1A0F1A 70%, #000000 100%);
+}
+
+.thanos-theme body::before {
+  background: 
+    radial-gradient(circle at 10% 20%, rgba(139, 90, 43, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 90% 80%, rgba(45, 27, 78, 0.05) 0%, transparent 50%),
+    url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="stars" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="0.5" fill="%23ffffff" opacity="0.1"/><circle cx="30" cy="25" r="0.3" fill="%23ffffff" opacity="0.08"/><circle cx="60" cy="15" r="0.4" fill="%23ffffff" opacity="0.06"/><circle cx="80" cy="40" r="0.2" fill="%23ffffff" opacity="0.1"/><circle cx="20" cy="60" r="0.3" fill="%23ffffff" opacity="0.07"/><circle cx="70" cy="80" r="0.5" fill="%23ffffff" opacity="0.05"/></pattern></defs><rect width="100%" height="100%" fill="url(%23stars)"/></svg>');
+}
+
+/* Utility Classes */
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent;
+  }
+  
+  .glass-card {
+    background: rgba(15, 15, 15, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(229, 181, 103, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+  }
+  
+  .premium-glow {
+    box-shadow: 0 0 20px rgba(229, 181, 103, 0.2);
+  }
+
+  .btn-primary {
+    @apply bg-gradient-to-r from-primary to-secondary text-black font-semibold px-6 py-3 rounded-lg;
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    @apply shadow-lg;
+    box-shadow: 0 10px 25px rgba(229, 181, 103, 0.3);
+    transform: translateY(-2px);
+  }
+
+  .btn-secondary {
+    @apply glass-card text-primary border border-primary/30 px-6 py-3 rounded-lg font-semibold;
+    transition: all 0.3s ease;
+  }
+
+  .btn-secondary:hover {
+    @apply bg-primary/10;
+    transform: translateY(-2px);
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0F0F0F;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #E5B567, #8B7355);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #8B7355, #E5B567);
+}
+
+/* Thanos theme specific animations */
+@keyframes gauntletGlow {
+  0% { 
+    text-shadow: 0 0 10px rgba(139, 90, 43, 0.5);
+    filter: brightness(1);
+  }
+  100% { 
+    text-shadow: 0 0 30px rgba(139, 90, 43, 0.8);
+    filter: brightness(1.2);
+  }
+}
+
+.animate-gauntlet-glow {
+  animation: gauntletGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes spaceDrift {
+  0% { 
+    transform: translateX(-200px) translateY(0px); 
+    opacity: 0;
+  }
+  10% { 
+    opacity: 0.1; 
+  }
+  90% { 
+    opacity: 0.1; 
+  }
+  100% { 
+    transform: translateX(calc(100vw + 200px)) translateY(-50px); 
+    opacity: 0;
+  }
+}
+
+/* Thanos ship */
+.thanos-ship {
+  position: fixed;
+  top: 20%;
+  right: -200px;
+  width: 150px;
+  height: 80px;
+  background: linear-gradient(45deg, #2D1B4E, #4A4A4A, #8B5A2B);
+  clip-path: polygon(0% 50%, 15% 20%, 85% 20%, 100% 50%, 85% 80%, 15% 80%);
+  opacity: 0;
+  animation: spaceDrift 30s linear infinite;
+  z-index: 1;
+  transition: opacity 1s ease;
+}
+
+.thanos-ship::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -15px;
+  width: 30px;
+  height: 3px;
+  background: linear-gradient(to right, transparent, #8B5A2B, transparent);
+  transform: translateY(-50%);
+  opacity: 0.6;
+}
+
+.thanos-ship::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -15px;
+  width: 20px;
+  height: 2px;
+  background: linear-gradient(to right, #FF4444, transparent);
+  transform: translateY(-50%);
+  opacity: 0.8;
+}
+
+/* Professional theme glass cards */
+.professional-theme .glass-card {
+  background: rgba(15, 15, 15, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(229, 181, 103, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.professional-theme .glass-card:hover {
+  background: rgba(25, 25, 25, 0.9);
+  border-color: rgba(229, 181, 103, 0.2);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* Thanos theme dark glass */
+.thanos-theme .dark-glass {
+  background: rgba(10, 10, 10, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(139, 90, 43, 0.2);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(139, 90, 43, 0.1);
+}
+
+.thanos-theme .dark-glass:hover {
+  background: rgba(20, 10, 20, 0.7);
+  border-color: rgba(139, 90, 43, 0.3);
+}
+
+.thanos-theme .thanos-glow {
+  box-shadow: 
+    0 0 20px rgba(139, 90, 43, 0.3),
+    0 0 40px rgba(139, 90, 43, 0.1),
+    inset 0 0 20px rgba(139, 90, 43, 0.05);
+}
+
+.thanos-theme .power-button {
+  background: linear-gradient(to right, #8B5A2B, #4A4A4A);
+  color: #000000;
+  font-weight: 900;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(139, 90, 43, 0.3);
+  border: none;
+}
+
+.thanos-theme .power-button:hover {
+  background: linear-gradient(to right, #A66A35, #5A5A5A);
+  box-shadow: 0 8px 25px rgba(139, 90, 43, 0.5);
+  transform: translateY(-2px);
+}
+
+.thanos-theme .dark-card {
+  background: linear-gradient(145deg, rgba(139, 90, 43, 0.03), rgba(45, 27, 78, 0.03));
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(139, 90, 43, 0.2);
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.thanos-theme .dark-card:hover {
+  background: linear-gradient(145deg, rgba(139, 90, 43, 0.05), rgba(45, 27, 78, 0.05));
+  border-color: rgba(139, 90, 43, 0.3);
+}
+
+/* Enhanced animations for both themes */
+@keyframes fadeUp {
+  0% { 
+    opacity: 0; 
+    transform: translateY(30px); 
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+@keyframes slideIn {
+  0% { 
+    opacity: 0; 
+    transform: translateX(-30px); 
+  }
+  100% { 
+    opacity: 1; 
+    transform: translateX(0); 
+  }
+}
+
+@keyframes float {
+  0%, 100% { 
+    transform: translateY(0px); 
+  }
+  50% { 
+    transform: translateY(-10px); 
+  }
+}
+
+@keyframes glow {
+  0% { 
+    box-shadow: 0 0 20px rgba(229, 181, 103, 0.2); 
+  }
+  100% { 
+    box-shadow: 0 0 30px rgba(229, 181, 103, 0.4); 
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { 
+    opacity: 1; 
+  }
+  50% { 
+    opacity: 0.7; 
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: 200px 0;
+  }
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.6s ease-out forwards;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.8s ease-out forwards;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+.animate-pulse-slow {
+  animation: pulse 3s ease-in-out infinite;
+}
+
+/* Particle effects */
+.particle {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 50%;
+}
+
+.professional-particle {
+  background: rgba(229, 181, 103, 0.1);
+}
+
+.thanos-particle {
+  background: rgba(139, 90, 43, 0.2);
+}
+
+/* Loading states and transitions */
+.theme-transition {
+  transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.theme-transition * {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .thanos-ship {
+    width: 100px;
+    height: 60px;
+    top: 15%;
+  }
+  
+  .glass-card, .dark-card {
+    backdrop-filter: blur(8px);
+  }
+}
+
+@media (max-width: 480px) {
+  .thanos-ship {
+    display: none;
+  }
+  
+  body::before {
+    background: 
+      radial-gradient(circle at 50% 50%, rgba(229, 181, 103, 0.02) 0%, transparent 50%);
+  }
+  
+  .thanos-theme body::before {
+    background: 
+      radial-gradient(circle at 50% 50%, rgba(139, 90, 43, 0.02) 0%, transparent 50%);
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .glass-card, .dark-card {
+    border-width: 2px;
+  }
+  
+  .text-gradient {
+    background: #E5B567;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .animate-gauntlet-glow,
+  .animate-float,
+  .animate-glow,
+  .animate-pulse-slow,
+  .thanos-ship {
+    animation: none;
+  }
+  
+  .theme-transition,
+  .theme-transition * {
+    transition: none;
+  }
+}
+
+/* Print styles */
+@media print {
+  .thanos-ship,
+  .particle,
+  body::before {
+    display: none;
+  }
+  
+  .glass-card,
+  .dark-card {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #333;
+  }
+}
+
+/* Focus styles for accessibility */
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid #E5B567;
+  outline-offset: 2px;
+}
+
+/* Selection styles */
+::selection {
+  background: rgba(229, 181, 103, 0.3);
+  color: #ffffff;
+}
+
+::-moz-selection {
+  background: rgba(229, 181, 103, 0.3);
+  color: #ffffff;
+}
+
+/* Smooth font rendering */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Performance optimizations */
+.glass-card,
+.dark-card,
+.btn-primary,
+.btn-secondary {
+  will-change: transform;
+}
+
+/* Theme-specific scrollbar styles */
+.thanos-theme ::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #8B5A2B, #2D1B4E);
+}
+
+.thanos-theme ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #2D1B4E, #8B5A2B);
+}
+
+.thanos-theme ::-webkit-scrollbar-track {
+  background: #0A0A0A;
+}
+
+/* Enhanced button styles for better UX */
+button,
+a[role="button"] {
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Additional professional theme enhancements */
+.professional-theme .text-gradient {
+  background: linear-gradient(135deg, #E5B567 0%, #8B7355 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Additional thanos theme enhancements */
+.thanos-theme .text-gradient {
+  background: linear-gradient(135deg, #8B5A2B 0%, #4A4A4A 50%, #8B5A2B 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
